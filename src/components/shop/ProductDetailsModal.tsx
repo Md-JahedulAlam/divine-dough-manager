@@ -12,7 +12,7 @@ export function ProductDetailsModal({
   onOrder,
 }: {
   product: Product | null;
-  categoryName?: string;
+  categoryName?: string | undefined;
   reviews: Review[];
   onClose: () => void;
   onOrder: (p: Product) => void;

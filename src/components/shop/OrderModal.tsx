@@ -48,8 +48,14 @@ export function OrderModal({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!product) return toast.error("Please choose a cake");
-    if (!name.trim() || !phone.trim() || !address.trim()) return toast.error("Please fill in your details");
+    if (!product) {
+      toast.error("Please choose a cake");
+      return;
+    }
+    if (!name.trim() || !phone.trim() || !address.trim()) {
+      toast.error("Please fill in your details");
+      return;
+    }
     setSubmitting(true);
     const { error } = await supabase.from("orders").insert({
       product_id: product.id,
@@ -64,7 +70,10 @@ export function OrderModal({
       total_price: total,
     });
     setSubmitting(false);
-    if (error) return toast.error("Could not place order. Please try again.");
+    if (error) {
+      toast.error("Could not place order. Please try again.");
+      return;
+    }
     toast.success("Order placed! We'll call you shortly to confirm.");
     setMessage(""); setName(""); setPhone(""); setAddress(""); setDate(""); setQuantity(1);
     onClose();
