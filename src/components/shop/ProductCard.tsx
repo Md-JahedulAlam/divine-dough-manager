@@ -9,7 +9,7 @@ export function ProductCard({
   onOrder,
 }: {
   product: Product;
-  categoryName?: string;
+  categoryName?: string | undefined;
   onView: () => void;
   onOrder: () => void;
 }) {
