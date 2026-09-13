@@ -1,7 +1,7 @@
 import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
-let serverEntryPromise;
+let serverEntryPromise: Promise<any> | undefined;
 async function getServerEntry() {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
@@ -10,7 +10,7 @@ async function getServerEntry() {
   }
   return serverEntryPromise;
 }
-async function normalizeCatastrophicSsrResponse(response) {
+async function normalizeCatastrophicSsrResponse(response: Response) {
   if (response.status < 500) return response;
   const contentType = response.headers.get("content-type") ?? "";
   if (!contentType.includes("application/json")) return response;
@@ -22,7 +22,7 @@ async function normalizeCatastrophicSsrResponse(response) {
     headers: { "content-type": "text/html; charset=utf-8" }
   });
 }
-function isH3SwallowedErrorBody(body) {
+function isH3SwallowedErrorBody(body: string) {
   try {
     const payload = JSON.parse(body);
     return payload.unhandled === true && payload.message === "HTTPError";
@@ -31,7 +31,7 @@ function isH3SwallowedErrorBody(body) {
   }
 }
 var server_default = {
-  async fetch(request, env, ctx) {
+  async fetch(request: Request, env: any, ctx: any) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
